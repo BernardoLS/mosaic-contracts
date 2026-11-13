@@ -1,0 +1,17 @@
+{
+    "id": "goals",
+    "name": "Mosaic Goals",
+    "version": "1.0.0",
+    "runtime": {
+        "framework": "flutter",
+        "frameworkVersion": "3.x"
+    },
+    "compatibility": {
+        "contractVersion": "1.0.0"
+    },
+    "capabilities": [
+        "goals.view",
+        "goals.create",
+        "goals.edit"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "profile",
+    "name": "Mosaic Profile",
+    "version": "1.0.0",
+    "runtime": {
+        "framework": "native-android"
+    },
+    "compatibility": {
+        "contractVersion": "1.0.0"
+    },
+    "capabilities": [
+        "profile.view",
+        "profile.edit"
+    ]
+}

@@ -1,0 +1,72 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/modules/module-manifest.schema.json",
+    "title": "Mosaic Module Manifest",
+    "description": "Metadata contract for Mosaic mobile modules.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "id",
+        "name",
+        "version",
+        "runtime",
+        "compatibility",
+        "capabilities"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
+        },
+        "runtime": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "framework"
+            ],
+            "properties": {
+                "framework": {
+                    "type": "string",
+                    "enum": [
+                        "native-android",
+                        "react-native",
+                        "flutter"
+                    ]
+                },
+                "frameworkVersion": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "compatibility": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "contractVersion"
+            ],
+            "properties": {
+                "contractVersion": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+                }
+            }
+        },
+        "capabilities": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*\\.[a-z][a-z0-9-]*$"
+            },
+            "uniqueItems": true
+        }
+    }
+}

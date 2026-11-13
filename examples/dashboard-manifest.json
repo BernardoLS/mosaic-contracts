@@ -1,0 +1,16 @@
+{
+    "id": "dashboard",
+    "name": "Mosaic Dashboard",
+    "version": "1.0.0",
+    "runtime": {
+        "framework": "react-native",
+        "frameworkVersion": "0.x"
+    },
+    "compatibility": {
+        "contractVersion": "1.0.0"
+    },
+    "capabilities": [
+        "dashboard.view",
+        "dashboard.refresh"
+    ]
+}
