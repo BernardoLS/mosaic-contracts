@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/events/profile-updated.schema.json",
+    "title": "Profile Updated Event",
+    "description": "Published when a user profile is updated.",
+    "allOf": [
+        {
+            "$ref": "./event-envelope.schema.json"
+        },
+        {
+            "type": "object",
+            "properties": {
+                "eventType": {
+                    "const": "profile.updated"
+                },
+                "eventVersion": {
+                    "const": "1.0.0"
+                },
+                "sourceModuleId": {
+                    "const": "profile"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "userId",
+                        "displayName"
+                    ],
+                    "properties": {
+                        "userId": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "displayName": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

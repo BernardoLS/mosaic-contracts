@@ -1,0 +1,44 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/events/event-envelope.schema.json",
+    "title": "Mosaic Event Envelope",
+    "description": "Standard envelope for events exchanged between Mosaic modules.",
+    "type": "object",
+    "required": [
+        "eventId",
+        "eventType",
+        "eventVersion",
+        "sourceModuleId",
+        "occurredAt",
+        "payload"
+    ],
+    "properties": {
+        "eventId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "eventType": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*\\.[a-z][a-z0-9-]*$"
+        },
+        "eventVersion": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "sourceModuleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "correlationId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "payload": {
+            "type": "object"
+        }
+    }
+}
