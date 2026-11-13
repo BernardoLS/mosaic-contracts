@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/navigation/navigation-result.schema.json",
+    "title": "Mosaic Navigation Result",
+    "description": "The final outcome of a navigation request.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "requestId",
+        "status"
+    ],
+    "properties": {
+        "requestId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "status": {
+            "type": "string",
+            "enum": [
+                "completed",
+                "cancelled",
+                "failed"
+            ]
+        },
+        "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "status": {
+                        "const": "failed"
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "then": {
+                "required": [
+                    "error"
+                ]
+            },
+            "else": {
+                "not": {
+                    "required": [
+                        "error"
+                    ]
+                }
+            }
+        }
+    ]
+}

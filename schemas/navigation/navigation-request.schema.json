@@ -1,0 +1,50 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/navigation/navigation-request.schema.json",
+    "title": "Mosaic Navigation Request",
+    "description": "A request from a module to navigate to another module route.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "requestId",
+        "contractVersion",
+        "sourceModuleId",
+        "destination",
+        "params"
+    ],
+    "properties": {
+        "requestId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "contractVersion": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "sourceModuleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "destination": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "moduleId",
+                "route"
+            ],
+            "properties": {
+                "moduleId": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]*$"
+                },
+                "route": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*$"
+                }
+            }
+        },
+        "params": {
+            "type": "object"
+        }
+    }
+}
