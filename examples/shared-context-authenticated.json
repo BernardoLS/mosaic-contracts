@@ -1,0 +1,19 @@
+{
+    "contextVersion": "1.0.0",
+    "user": {
+        "id": "user-123",
+        "displayName": "Bernardo",
+        "avatarUrl": "https://example.com/avatar.png"
+    },
+    "app": {
+        "theme": "dark",
+        "locale": "pt-BR"
+    },
+    "session": {
+        "status": "authenticated"
+    },
+    "runtime": {
+        "hostVersion": "1.0.0",
+        "platform": "android"
+    }
+}

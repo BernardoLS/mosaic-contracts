@@ -1,0 +1,130 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/context/shared-context.schema.json",
+    "title": "Mosaic Shared Context",
+    "description": "Application context provided by the Android Host to integrated modules.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "contextVersion",
+        "app",
+        "session",
+        "runtime"
+    ],
+    "properties": {
+        "contextVersion": {
+            "type": "string",
+            "const": "1.0.0"
+        },
+        "user": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "displayName"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "displayName": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "avatarUrl": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            }
+        },
+        "app": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "theme",
+                "locale"
+            ],
+            "properties": {
+                "theme": {
+                    "type": "string",
+                    "enum": [
+                        "light",
+                        "dark",
+                        "system"
+                    ]
+                },
+                "locale": {
+                    "type": "string",
+                    "minLength": 2
+                }
+            }
+        },
+        "session": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "authenticated",
+                        "anonymous"
+                    ]
+                }
+            }
+        },
+        "runtime": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "hostVersion",
+                "platform"
+            ],
+            "properties": {
+                "hostVersion": {
+                    "type": "string"
+                },
+                "platform": {
+                    "type": "string",
+                    "const": "android"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "session": {
+                        "properties": {
+                            "status": {
+                                "const": "authenticated"
+                            }
+                        },
+                        "required": [
+                            "status"
+                        ]
+                    }
+                },
+                "required": [
+                    "session"
+                ]
+            },
+            "then": {
+                "required": [
+                    "user"
+                ]
+            },
+            "else": {
+                "not": {
+                    "required": [
+                        "user"
+                    ]
+                }
+            }
+        }
+    ]
+}
