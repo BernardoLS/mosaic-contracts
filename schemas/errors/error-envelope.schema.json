@@ -1,0 +1,62 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/errors/error-envelope.schema.json",
+    "title": "Mosaic Error Envelope",
+    "description": "Standard error representation across Mosaic modules.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "errorId",
+        "code",
+        "category",
+        "message",
+        "sourceModuleId",
+        "occurredAt",
+        "retryable"
+    ],
+    "properties": {
+        "errorId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "category": {
+            "type": "string",
+            "enum": [
+                "MODULE",
+                "INITIALIZATION",
+                "COMMUNICATION",
+                "NAVIGATION",
+                "CONTRACT",
+                "TIMEOUT",
+                "RUNTIME",
+                "AUTHENTICATION"
+            ]
+        },
+        "message": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sourceModuleId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "retryable": {
+            "type": "boolean"
+        },
+        "correlationId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "details": {
+            "type": "object"
+        }
+    }
+}

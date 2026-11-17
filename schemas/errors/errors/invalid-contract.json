@@ -1,0 +1,13 @@
+{
+    "errorId": "550e8400-e29b-41d4-a716-446655440003",
+    "code": "INVALID_NAVIGATION_REQUEST",
+    "category": "CONTRACT",
+    "message": "The navigation request does not match the expected schema.",
+    "sourceModuleId": "dashboard",
+    "occurredAt": "2026-11-16T17:00:00Z",
+    "retryable": false,
+    "details": {
+        "contract": "navigation-request",
+        "contractVersion": "1.0.0"
+    }
+}

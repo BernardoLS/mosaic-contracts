@@ -1,0 +1,12 @@
+{
+    "errorId": "550e8400-e29b-41d4-a716-446655440000",
+    "code": "MODULE_NOT_AVAILABLE",
+    "category": "MODULE",
+    "message": "The requested module is currently unavailable.",
+    "sourceModuleId": "android-host",
+    "occurredAt": "2026-11-16T17:00:00Z",
+    "retryable": true,
+    "details": {
+        "targetModuleId": "goals"
+    }
+}
