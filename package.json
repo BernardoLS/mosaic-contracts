@@ -1,0 +1,36 @@
+{
+  "devDependencies": {
+    "ajv-cli": "^5.0.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "name": "mosaic-contracts",
+  "version": "1.0.0",
+  "description": "Technology-agnostic contracts for the Mosaic Multi-Framework Mobile Architecture.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "fast-deep-equal": "^3.1.3",
+    "fast-uri": "^3.1.9",
+    "json-schema-traverse": "^1.0.0",
+    "require-from-string": "^2.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BernardoLS/mosaic-contracts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BernardoLS/mosaic-contracts/issues"
+  },
+  "homepage": "https://github.com/BernardoLS/mosaic-contracts#readme"
+}
