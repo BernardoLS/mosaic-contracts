@@ -3,13 +3,17 @@
     "name": "Mosaic Profile",
     "version": "1.0.0",
     "runtime": {
-        "framework": "native-android"
+        "framework": "native-android",
+        "frameworkVersion": "1.0"
     },
     "compatibility": {
+        "minimumHostVersion": "1.0.0",
         "contractVersion": "1.0.0"
     },
-    "capabilities": [
-        "profile.view",
-        "profile.edit"
+    "requiredCapabilities": [
+        "context.snapshot",
+        "navigation.request",
+        "events.publish",
+        "events.subscribe"
     ]
 }

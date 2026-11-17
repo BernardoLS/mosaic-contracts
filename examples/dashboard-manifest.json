@@ -7,10 +7,12 @@
         "frameworkVersion": "0.x"
     },
     "compatibility": {
+        "minimumHostVersion": "1.2.0",
         "contractVersion": "1.0.0"
     },
-    "capabilities": [
-        "dashboard.view",
-        "dashboard.refresh"
+    "requiredCapabilities": [
+        "navigation.request",
+        "context.snapshot",
+        "events.publish"
     ]
 }

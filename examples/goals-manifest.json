@@ -7,11 +7,13 @@
         "frameworkVersion": "3.x"
     },
     "compatibility": {
+        "minimumHostVersion": "1.2.0",
         "contractVersion": "1.0.0"
     },
-    "capabilities": [
-        "goals.view",
-        "goals.create",
-        "goals.edit"
+    "requiredCapabilities": [
+        "navigation.request",
+        "context.snapshot",
+        "events.publish",
+        "events.subscribe"
     ]
 }
