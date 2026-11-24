@@ -1,19 +1,91 @@
 {
-    "contextVersion": "1.0.0",
-    "user": {
-        "id": "user-123",
-        "displayName": "Bernardo",
-        "avatarUrl": "https://example.com/avatar.png"
-    },
-    "app": {
-        "theme": "dark",
-        "locale": "pt-BR"
-    },
-    "session": {
-        "status": "authenticated"
-    },
-    "runtime": {
-        "hostVersion": "1.0.0",
-        "platform": "android"
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Shared Context",
+    "description": "Shared application context snapshot provided by the Host to modules.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "contextVersion",
+        "app",
+        "session",
+        "runtime"
+    ],
+    "properties": {
+        "contextVersion": {
+            "type": "string",
+            "description": "Version of the shared context contract."
+        },
+        "user": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "app": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "theme",
+                "locale"
+            ],
+            "properties": {
+                "theme": {
+                    "type": "string",
+                    "enum": [
+                        "light",
+                        "dark",
+                        "system"
+                    ]
+                },
+                "locale": {
+                    "type": "string",
+                    "minLength": 2
+                }
+            }
+        },
+        "session": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "authenticated",
+                        "anonymous"
+                    ]
+                }
+            }
+        },
+        "runtime": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "hostVersion",
+                "platform"
+            ],
+            "properties": {
+                "hostVersion": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "platform": {
+                    "type": "string",
+                    "enum": [
+                        "android",
+                        "ios"
+                    ]
+                }
+            }
+        }
     }
 }

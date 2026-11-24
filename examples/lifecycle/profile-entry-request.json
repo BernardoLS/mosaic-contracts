@@ -1,0 +1,26 @@
+{
+    "moduleId": "profile",
+    "moduleInstanceId": "profile-instance-001",
+    "entryPoint": "profile.details",
+    "parameters": {
+        "userId": "user-123"
+    },
+    "context": {
+        "contextVersion": "1.0.0",
+        "user": {
+            "id": "user-123"
+        },
+        "app": {
+            "theme": "dark",
+            "locale": "pt-BR"
+        },
+        "session": {
+            "status": "authenticated"
+        },
+        "runtime": {
+            "hostVersion": "1.2.0",
+            "platform": "android"
+        }
+    },
+    "correlationId": "550e8400-e29b-41d4-a716-446655440000"
+}

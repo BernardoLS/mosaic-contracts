@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Module Entry Request",
+    "description": "Generic request to initialize a specific module instance.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "moduleId",
+        "moduleInstanceId",
+        "entryPoint",
+        "parameters",
+        "context",
+        "correlationId"
+    ],
+    "properties": {
+        "moduleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Identifier of the registered module."
+        },
+        "moduleInstanceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Host-generated identifier of the module instance."
+        },
+        "entryPoint": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Identifier of the requested module entry point."
+        },
+        "parameters": {
+            "type": "object",
+            "description": "Module-specific initialization parameters. The target module owns their schema."
+        },
+        "context": {
+            "$ref": "https://mosaic.dev/schemas/context/shared-context.schema.json",
+            "description": "Shared application context snapshot provided by the Host."
+        },
+        "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier used to correlate this request with related operations."
+        }
+    }
+}

@@ -1,8 +1,8 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://mosaic.dev/schemas/context/shared-context.schema.json",
-    "title": "Mosaic Shared Context",
-    "description": "Application context provided by the Android Host to integrated modules.",
+    "title": "Shared Context",
+    "description": "Shared application context snapshot provided by the Host to modules.",
     "type": "object",
     "additionalProperties": false,
     "required": [
@@ -14,27 +14,18 @@
     "properties": {
         "contextVersion": {
             "type": "string",
-            "const": "1.0.0"
+            "description": "Version of the shared context contract."
         },
         "user": {
             "type": "object",
             "additionalProperties": false,
             "required": [
-                "id",
-                "displayName"
+                "id"
             ],
             "properties": {
                 "id": {
                     "type": "string",
                     "minLength": 1
-                },
-                "displayName": {
-                    "type": "string",
-                    "minLength": 1
-                },
-                "avatarUrl": {
-                    "type": "string",
-                    "format": "uri"
                 }
             }
         },
@@ -85,46 +76,17 @@
             ],
             "properties": {
                 "hostVersion": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1
                 },
                 "platform": {
                     "type": "string",
-                    "const": "android"
-                }
-            }
-        }
-    },
-    "allOf": [
-        {
-            "if": {
-                "properties": {
-                    "session": {
-                        "properties": {
-                            "status": {
-                                "const": "authenticated"
-                            }
-                        },
-                        "required": [
-                            "status"
-                        ]
-                    }
-                },
-                "required": [
-                    "session"
-                ]
-            },
-            "then": {
-                "required": [
-                    "user"
-                ]
-            },
-            "else": {
-                "not": {
-                    "required": [
-                        "user"
+                    "enum": [
+                        "android",
+                        "ios"
                     ]
                 }
             }
         }
-    ]
+    }
 }

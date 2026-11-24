@@ -1,0 +1,69 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/lifecycle/module-lifecycle-state.schema.json",
+    "title": "Module Lifecycle State",
+    "description": "Current lifecycle state of a specific module instance.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "moduleId",
+        "moduleInstanceId",
+        "status",
+        "occurredAt"
+    ],
+    "properties": {
+        "moduleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+        },
+        "moduleInstanceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+        },
+        "status": {
+            "type": "string",
+            "enum": [
+                "NOT_INITIALIZED",
+                "INITIALIZING",
+                "READY",
+                "FAILED",
+                "DESTROYED"
+            ]
+        },
+        "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "error": {
+            "$ref": "https://mosaic.dev/schemas/errors/error-envelope.schema.json"
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "status": {
+                        "const": "FAILED"
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "then": {
+                "required": [
+                    "error"
+                ]
+            },
+            "else": {
+                "not": {
+                    "required": [
+                        "error"
+                    ]
+                }
+            }
+        }
+    ]
+}

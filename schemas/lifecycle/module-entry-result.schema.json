@@ -1,0 +1,71 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Module Entry Result",
+    "description": "Standardized result returned by the Host for a module entry request.",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "moduleId",
+        "moduleInstanceId",
+        "correlationId",
+        "status",
+        "occurredAt"
+    ],
+    "properties": {
+        "moduleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+        },
+        "moduleInstanceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+        },
+        "correlationId": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "status": {
+            "type": "string",
+            "enum": [
+                "INITIALIZING",
+                "READY",
+                "FAILED"
+            ]
+        },
+        "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "error": {
+            "$ref": "https://mosaic.dev/schemas/errors/error-envelope.schema.json"
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "status": {
+                        "const": "FAILED"
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "then": {
+                "required": [
+                    "error"
+                ]
+            },
+            "else": {
+                "not": {
+                    "required": [
+                        "error"
+                    ]
+                }
+            }
+        }
+    ]
+}

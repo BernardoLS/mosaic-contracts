@@ -1,0 +1,15 @@
+{
+    "moduleId": "profile",
+    "moduleInstanceId": "550e8400-e29b-41d4-a716-446655440002",
+    "status": "FAILED",
+    "occurredAt": "2026-11-23T10:00:10Z",
+    "error": {
+        "errorId": "550e8400-e29b-41d4-a716-446655440003",
+        "code": "MODULE_INITIALIZATION_FAILED",
+        "category": "INITIALIZATION",
+        "message": "The profile module failed to initialize.",
+        "sourceModuleId": "profile",
+        "occurredAt": "2026-11-23T10:00:10Z",
+        "retryable": false
+    }
+}

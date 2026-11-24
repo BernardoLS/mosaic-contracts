@@ -1,0 +1,165 @@
+
+# ADR-0009 — Module Entry & Lifecycle Contract
+
+- **Status:** Accepted
+- **Date:** 2026-11-20
+- **Decision Area:** Module Entry, Initialization and Lifecycle Management
+
+## Context
+
+Mosaic supports independent mobile modules implemented using different runtimes, including Native Android, React Native and Flutter.
+
+The Host must provide a consistent mechanism to request module initialization without depending on runtime-specific implementation details.
+
+Each module may expose multiple entry points and require different initialization parameters. These parameters must remain under the ownership of the respective module.
+
+Additionally, runtime initialization may involve asynchronous operations. The architecture must support independent initialization of multiple modules and multiple instances of the same module.
+
+## Decisions
+
+### 1. Generic Module Entry Request
+
+Module initialization requests will use a runtime-agnostic envelope.
+
+The shared contract will define the request structure, while each module remains responsible for defining and validating its own entry-point parameters.
+
+The request includes:
+
+- `moduleId`: identifies the target module.
+- `moduleInstanceId`: identifies the specific module instance.
+- `entryPoint`: identifies the requested module entry point.
+- `parameters`: module-specific initialization parameters.
+- `context`: shared application context supplied by the Host.
+- `correlationId`: correlates the request with related operations.
+
+The Host must not depend on the internal structure of module-specific parameters.
+
+### 2. Module-Owned Entry Parameters
+
+Each module defines the parameters accepted by its entry points.
+
+The Host validates the generic request structure and performs the necessary routing and compatibility checks.
+
+The target module validates its own parameters before completing initialization.
+
+This approach preserves module autonomy and avoids centralizing module-specific schemas in the shared contracts repository.
+
+### 3. Asynchronous Initialization
+
+Module initialization must be asynchronous.
+
+The Host must be able to initiate initialization without blocking unrelated module operations.
+
+Initialization completion must be communicated through a standardized result contract.
+
+### 4. Independent Module Initialization
+
+Each module instance has an independent lifecycle state.
+
+Initialization of one instance must not automatically block or alter the lifecycle of another instance.
+
+The Host-owned Lifecycle Manager is responsible for tracking instance lifecycle states and coordinating lifecycle transitions.
+
+### 5. Multiple Instances of the Same Module
+
+The architecture must support multiple independent instances of the same module.
+
+The following identifiers have distinct responsibilities:
+
+- `moduleId` identifies the module registered in the Module Registry.
+- `moduleInstanceId` identifies a specific runtime instance of that module.
+
+The Host owns the generation and management of `moduleInstanceId`.
+
+Each instance maintains its own initialization state and lifecycle.
+
+Destroying one instance must not automatically destroy other instances of the same module.
+
+#### Initialization Idempotency
+
+Initialization requests must be idempotent per module instance.
+
+The Lifecycle Manager must prevent duplicate initialization operations for the same `moduleInstanceId`.
+
+The following rules apply:
+
+- **Same instance, same initialization request:** the Host must not start another initialization operation. The new request must be associated with the existing operation or receive its current status.
+- **Same instance, different initialization parameters:** the Host must reject the request with a standardized conflict error.
+- **Instance already in `READY`:** the Host must not initialize it again. The existing instance state or result must be returned.
+- **Instance already in `DESTROYED`:** the instance identifier cannot be reused. A new `moduleInstanceId` is required.
+
+For initialization identity, the `entryPoint` and `parameters` define the requested initialization configuration. A different `correlationId` does not represent a different initialization request.
+
+This policy prevents duplicate initialization, preserves instance identity and makes lifecycle behavior predictable.
+
+### 6. Lifecycle Ownership
+
+The Host owns the Module Lifecycle Manager.
+
+Modules are responsible for their own initialization and runtime-specific implementation, while the Host coordinates their lifecycle through standardized contracts and runtime adapters.
+
+### 7. Initialization and Presentation Are Separate Concerns
+
+A module reaching the `READY` state indicates that its initialization has completed successfully.
+
+It does not necessarily indicate that the module is currently visible or presented to the user.
+
+Module initialization and UI presentation must remain separate architectural concerns.
+
+## Initial Lifecycle States
+
+The initial lifecycle model includes:
+
+- `NOT_INITIALIZED`
+- `INITIALIZING`
+- `READY`
+- `FAILED`
+- `DESTROYED`
+
+Lifecycle state is tracked per module instance.
+
+## Consequences
+
+### Positive
+
+- Provides a consistent initialization mechanism across different runtimes.
+- Preserves ownership of module-specific parameters.
+- Allows independent initialization of multiple modules and instances.
+- Supports multiple instances of the same module.
+- Prevents runtime-specific implementation details from leaking into the shared contract.
+- Establishes a foundation for Host-owned lifecycle management.
+
+### Trade-offs
+
+- Requires runtime adapters to translate generic requests into runtime-specific initialization operations.
+- Requires explicit instance identity management.
+- Requires lifecycle state isolation between instances.
+- Introduces additional coordination responsibilities in the Host.
+- Requires standardized initialization result and error handling.
+
+## Open Questions
+
+The following topics require further specification before implementation:
+
+1. Timeout policies for initialization.
+2. Cancellation semantics and behavior.
+3. Retry policies and whether retries are automatic or explicitly requested.
+4. Behavior when multiple initialization requests target the same instance.
+5. Module instance creation and destruction semantics.
+6. Behavior when an instance fails after previously reaching `READY`.
+7. Whether initialization requests are idempotent.
+8. Detailed lifecycle transition rules.
+9. Runtime resource sharing between instances of the same module.
+
+## Implementation Strategy
+
+The implementation will follow a contract-first approach:
+
+1. Define the generic Module Entry Request schema.
+2. Define the Module Entry Result schema.
+3. Formalize lifecycle states and valid transitions.
+4. Provide representative examples.
+5. Validate schemas and examples.
+6. Extend the implementation to React Native and Flutter adapters.
+
+The shared contracts remain the source of truth for cross-runtime interoperability.
