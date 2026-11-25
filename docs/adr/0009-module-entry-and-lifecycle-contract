@@ -92,6 +92,8 @@ For initialization identity, the `entryPoint` and `parameters` define the reques
 
 This policy prevents duplicate initialization, preserves instance identity and makes lifecycle behavior predictable.
 
+The Lifecycle Manager must maintain the initialization configuration associated with each module instance to identify duplicate requests and detect conflicting initialization attempts.
+
 ### 6. Lifecycle Ownership
 
 The Host owns the Module Lifecycle Manager.
@@ -106,9 +108,56 @@ It does not necessarily indicate that the module is currently visible or present
 
 Module initialization and UI presentation must remain separate architectural concerns.
 
+
+### 8. Lifecycle State Transitions
+
+The Host-owned Lifecycle Manager is responsible for enforcing valid lifecycle state transitions.
+
+The following transitions are allowed:
+
+| Current State | Allowed Next States |
+|---|---|
+| `NOT_INITIALIZED` | `INITIALIZING`, `DESTROYED` |
+| `INITIALIZING` | `READY`, `FAILED`, `DESTROYED` |
+| `READY` | `DESTROYED` |
+| `FAILED` | `DESTROYED` |
+| `DESTROYED` | None |
+
+The following rules apply:
+
+- `READY` is permanent until the instance is destroyed. An initialized instance cannot return to `INITIALIZING`.
+- `FAILED` is terminal for initialization. A new initialization attempt requires a new `moduleInstanceId`.
+- `DESTROYED` is a terminal state. Its `moduleInstanceId` cannot be reused.
+- Destroying an instance in `INITIALIZING` requests cancellation of its initialization.
+- Once an instance reaches `DESTROYED`, late initialization callbacks or results must not change its lifecycle state.
+- Lifecycle transitions are managed and validated exclusively by the Host.
+
+The Host must prevent any late initialization completion from changing the state of an instance that has already reached `DESTROYED`, regardless of whether the underlying runtime operation can be immediately interrupted.
+
+
+### 9. Lifecycle and Runtime Health Separation
+
+Lifecycle state and runtime health represent different concerns.
+
+Lifecycle state describes the initialization and destruction status of a module instance.
+
+Runtime health describes the operational condition of an instance after successful initialization.
+
+A runtime failure after an instance reaches `READY` does not change its lifecycle state to `FAILED`.
+
+The following rules apply:
+
+- `FAILED` represents initialization failure exclusively.
+- Runtime failures after `READY` are reported independently using the standardized Error Envelope.
+- Runtime failures use the `RUNTIME` error category.
+- The Host determines the appropriate response to runtime failures, which may include keeping the instance active, interrupting its presentation or destroying it.
+- If the Host destroys the instance, its lifecycle transitions from `READY` to `DESTROYED`.
+
+Runtime health must not introduce additional lifecycle states or change the defined lifecycle transition rules.
+
 ## Initial Lifecycle States
 
-The initial lifecycle model includes:
+The lifecycle model includes:
 
 - `NOT_INITIALIZED`
 - `INITIALIZING`
@@ -116,7 +165,14 @@ The initial lifecycle model includes:
 - `FAILED`
 - `DESTROYED`
 
-Lifecycle state is tracked per module instance.
+Lifecycle state is tracked independently for each module instance.
+
+The Host-owned Lifecycle Manager enforces the allowed state transitions defined in this ADR.
+
+`READY` and `FAILED` are terminal initialization states. Both may transition to `DESTROYED`.
+
+`DESTROYED` is the final lifecycle state and does not allow further transitions.
+
 
 ## Consequences
 
@@ -128,6 +184,10 @@ Lifecycle state is tracked per module instance.
 - Supports multiple instances of the same module.
 - Prevents runtime-specific implementation details from leaking into the shared contract.
 - Establishes a foundation for Host-owned lifecycle management.
+- Defines explicit lifecycle transition rules and terminal states.
+- Separates initialization lifecycle from runtime operational health.
+- Prevents late initialization results from modifying destroyed instances.
+
 
 ### Trade-offs
 
@@ -141,15 +201,11 @@ Lifecycle state is tracked per module instance.
 
 The following topics require further specification before implementation:
 
-1. Timeout policies for initialization.
-2. Cancellation semantics and behavior.
-3. Retry policies and whether retries are automatic or explicitly requested.
-4. Behavior when multiple initialization requests target the same instance.
-5. Module instance creation and destruction semantics.
-6. Behavior when an instance fails after previously reaching `READY`.
-7. Whether initialization requests are idempotent.
-8. Detailed lifecycle transition rules.
-9. Runtime resource sharing between instances of the same module.
+1. Initialization timeout policies and timeout handling.
+2. Runtime resource sharing between instances of the same module.
+3. Detailed cancellation mechanics, including runtime adapter behavior and cancellation completion guarantees.
+4. Retry orchestration and recovery policies beyond the requirement to use a new `moduleInstanceId`.
+5. The specific event type and payload used to communicate asynchronous initialization status updates through the MOS-004 Event Communication contract.
 
 ## Implementation Strategy
 

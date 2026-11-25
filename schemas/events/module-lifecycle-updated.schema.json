@@ -1,0 +1,91 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://mosaic.dev/schemas/events/module-lifecycle-updated.schema.json",
+    "title": "Module Lifecycle Updated Event",
+    "description": "Event published by the Host when a module instance completes initialization.",
+    "type": "object",
+    "allOf": [
+        {
+            "$ref": "https://mosaic.dev/schemas/events/event-envelope.schema.json"
+        },
+        {
+            "type": "object",
+            "required": [
+                "correlationId"
+            ],
+            "properties": {
+                "eventType": {
+                    "const": "module.lifecycle.updated"
+                },
+                "eventVersion": {
+                    "const": "1.0.0"
+                },
+                "sourceModuleId": {
+                    "const": "host"
+                },
+                "payload": {
+                    "type": "object",
+                    "required": [
+                        "moduleId",
+                        "moduleInstanceId",
+                        "status"
+                    ],
+                    "properties": {
+                        "moduleId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                        },
+                        "moduleInstanceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                        },
+                        "requesterModuleId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                        },
+                        "status": {
+                            "enum": [
+                                "READY",
+                                "FAILED"
+                            ]
+                        },
+                        "error": {
+                            "$ref": "https://mosaic.dev/schemas/errors/error-envelope.schema.json"
+                        }
+                    },
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "status": {
+                                        "const": "FAILED"
+                                    }
+                                },
+                                "required": [
+                                    "status"
+                                ]
+                            },
+                            "then": {
+                                "required": [
+                                    "error"
+                                ]
+                            },
+                            "else": {
+                                "not": {
+                                    "required": [
+                                        "error"
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "additionalProperties": false
+                }
+            }
+        }
+    ],
+    "unevaluatedProperties": false
+}

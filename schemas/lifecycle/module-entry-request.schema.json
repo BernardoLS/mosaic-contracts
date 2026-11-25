@@ -25,6 +25,12 @@
             "maxLength": 128,
             "description": "Host-generated identifier of the module instance."
         },
+        "requesterModuleId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Identifier of the module that initiated the request. Omitted when the request originates from the Host."
+        },
         "entryPoint": {
             "type": "string",
             "minLength": 1,

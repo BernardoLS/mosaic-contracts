@@ -1,0 +1,14 @@
+{
+    "eventId": "a1e84000-e29b-41d4-a716-446655440000",
+    "eventType": "module.lifecycle.updated",
+    "eventVersion": "1.0.0",
+    "sourceModuleId": "host",
+    "occurredAt": "2026-11-25T04:00:00Z",
+    "correlationId": "550e8400-e29b-41d4-a716-446655440000",
+    "payload": {
+        "moduleId": "goals",
+        "moduleInstanceId": "instance-123",
+        "requesterModuleId": "dashboard",
+        "status": "FAILED"
+    }
+}

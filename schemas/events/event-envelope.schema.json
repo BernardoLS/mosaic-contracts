@@ -19,7 +19,7 @@
         },
         "eventType": {
             "type": "string",
-            "pattern": "^[a-z][a-z0-9-]*\\.[a-z][a-z0-9-]*$"
+            "pattern": "^[a-z][a-z0-9-]*(\\.[a-z][a-z0-9-]*)+$"
         },
         "eventVersion": {
             "type": "string",

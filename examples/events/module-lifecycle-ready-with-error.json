@@ -1,0 +1,23 @@
+{
+    "eventId": "b1e84000-e29b-41d4-a716-446655440000",
+    "eventType": "module.lifecycle.updated",
+    "eventVersion": "1.0.0",
+    "sourceModuleId": "host",
+    "occurredAt": "2026-11-25T04:01:00Z",
+    "correlationId": "650e8400-e29b-41d4-a716-446655440000",
+    "payload": {
+        "moduleId": "goals",
+        "moduleInstanceId": "instance-123",
+        "requesterModuleId": "dashboard",
+        "status": "READY",
+        "error": {
+            "errorId": "c1e84000-e29b-41d4-a716-446655440000",
+            "code": "MODULE_INITIALIZATION_FAILED",
+            "category": "INITIALIZATION",
+            "message": "Module initialization failed",
+            "sourceModuleId": "host",
+            "occurredAt": "2026-11-25T04:01:00Z",
+            "retryable": false
+        }
+    }
+}
